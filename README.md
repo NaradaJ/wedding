@@ -5,8 +5,7 @@ Live link: https://naradaj.github.io/wedding/
 ## Files
 - `index.html`: the whole invitation (styles and script included)
 - `assets/`: `cover-art.webp`, `corner.webp`, `music.mp3`, `og-image.jpg` (WhatsApp preview)
-
-Fonts (Noto Serif Sinhala and Noto Sans Sinhala) load from Google Fonts.
+- `assets/fonts/`: Noto Serif Sinhala and Noto Sans Sinhala, hosted with the site so the page doesn't depend on Google Fonts
 
 ## Put it online with GitHub Pages
 1. Go to **Settings → Pages**. Under *Branch*, choose `main` and `/ (root)`, then click **Save**.
