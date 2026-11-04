@@ -262,8 +262,10 @@ textarea.field{resize:none;height:72px;line-height:1.6}
       </a>
 
       <div class="card reveal d3">
-        <label class="label" for="gname">ඔබගේ නම</label>
-        <input class="field" id="gname" type="text" autocomplete="name" enterkeyhint="done" maxlength="80" placeholder="උදා: සුනිල් පෙරේරා සහ පවුල">
+        <div id="nameBox">
+          <label class="label" for="gname">ඔබගේ නම</label>
+          <input class="field" id="gname" type="text" autocomplete="name" enterkeyhint="done" maxlength="80" placeholder="උදා: සුනිල් පෙරේරා සහ පවුල">
+        </div>
 
         <div class="choice" id="choice" role="group" aria-label="පැමිණීම">
           <button type="button" class="yes" id="yes" aria-pressed="false">සතුටින්<br>සහභාගී වෙමි</button>
@@ -319,7 +321,8 @@ let page = 0;
 // personal greeting:  ...?to=සුනිල් මහතා සහ පවුලේ අය
 const params = new URLSearchParams(location.search);
 const guest = (params.get('to') || '').trim();
-if (guest) { $('greet').textContent = 'ආදරණීය ' + guest; $('gname').value = guest; }
+// name comes from the link, so the name field is hidden; without ?to= the guest types it
+if (guest) { $('greet').textContent = 'ආදරණීය ' + guest; $('gname').value = guest; $('nameBox').hidden = true; }
 
 $('mapLink').href = MAP_URL;
 
