@@ -18,6 +18,9 @@
 <meta property="og:url" content="https://naradaj.github.io/wedding/">
 <link rel="icon" href="assets/corner.webp">
 <link rel="preload" href="assets/cover-art.webp" as="image">
+<!-- the cover title and names use these two; loading them early stops the text popping in -->
+<link rel="preload" href="assets/fonts/noto-serif-sinhala-sinhala-600-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="assets/fonts/noto-serif-sinhala-sinhala-400-normal.woff2" as="font" type="font/woff2" crossorigin>
 
 <style>
 @font-face{font-family:'Serif Si';font-weight:400;font-display:swap;src:url(assets/fonts/noto-serif-sinhala-latin-400-normal.woff2) format('woff2')}
@@ -36,7 +39,8 @@
   --serif:'Serif Si','Noto Serif Sinhala',serif; --sans:'Sans Si','Noto Sans Sinhala',sans-serif;
 }
 *{box-sizing:border-box;margin:0;padding:0}
-html,body{height:100%;overflow:hidden;background:#e9dcc0}
+/* overscroll-behavior stops the iPhone rubber-band bounce and Android pull-to-refresh tug */
+html,body{height:100%;overflow:hidden;overscroll-behavior:none;background:#e9dcc0}
 body{font-family:var(--sans);color:var(--ink);display:flex;justify-content:center;-webkit-font-smoothing:antialiased}
 button,input,textarea{font:inherit;color:inherit}
 /* no double-tap zoom delay on buttons and links; clear keyboard focus ring */
@@ -83,7 +87,8 @@ button,a{touch-action:manipulation}
 @keyframes rise{to{opacity:1;transform:none}}
 
 /* gold foil text */
-.foil{background:linear-gradient(100deg,#7a5516 0%,#b48a35 28%,#e6cd8a 45%,#b48a35 60%,#7a5516 100%);background-size:220% 100%;
+/* highlight kept deep enough that the lightest part of a word stays readable on cream */
+.foil{background:linear-gradient(100deg,#7a5516 0%,#a77d2c 28%,#cfa955 45%,#a77d2c 60%,#7a5516 100%);background-size:220% 100%;
   -webkit-background-clip:text;background-clip:text;color:transparent;animation:sheen 7s ease-in-out infinite}
 @keyframes sheen{0%,100%{background-position:100% 0}50%{background-position:0 0}}
 
@@ -94,15 +99,24 @@ button,a{touch-action:manipulation}
 .rule svg{width:16px;height:16px;flex:none}
 
 /* ---------- page 1: cover ---------- */
-#p1 .content{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100%}
-.cover-art{width:min(82%,360px);height:auto;filter:drop-shadow(0 6px 14px rgba(125,90,24,.12))}
-.scene.on .cover-art{animation:bloom 1.6s cubic-bezier(.2,.7,.2,1) both}
+/* page 1 has no nav bar, so it doesn't need the extra bottom padding */
+#p1{padding-bottom:34px}
+/* centred with auto margins (not justify-content) so that, if the screen is too short,
+   the page scrolls from the top instead of cutting the picture off */
+#p1 .content{display:flex;flex-direction:column;align-items:center;min-height:100%}
+#p1 .content>:first-child{margin-top:auto}
+#p1 .content>:last-child{margin-bottom:auto}
+/* the picture is the only thing allowed to shrink, so on short screens or with large phone text
+   it gets smaller instead of the page having to scroll */
+.cover-art{width:min(82%,360px);height:auto;flex:0 1 auto;min-height:90px;object-fit:contain;filter:drop-shadow(0 6px 14px rgba(125,90,24,.12))}
+.scene.on .cover-art{animation:bloom 1.2s cubic-bezier(.2,.7,.2,1) both}
 @keyframes bloom{from{opacity:0;transform:scale(.94)}to{opacity:1;transform:none}}
 .cover-title{font-family:var(--serif);font-weight:600;font-size:clamp(30px,8.4vw,40px);line-height:1.5;margin-top:22px;letter-spacing:.01em}
 .cover-sub{font-family:var(--serif);color:var(--soft);font-size:clamp(14px,3.9vw,16px);margin-top:4px;letter-spacing:.04em}
 .greet{font-family:var(--serif);color:var(--maroon);font-size:clamp(15px,4.2vw,18px);margin-top:16px;min-height:1em}
+.cover-date{font-family:var(--serif);font-weight:600;color:var(--gold-dk);font-size:clamp(13px,3.7vw,15px);letter-spacing:.03em;margin-top:14px}
 /* countdown: same fine gold rules as the date block on page 2 */
-.countdown{display:flex;justify-content:center;width:100%;max-width:300px;margin:18px auto 0;padding:10px 0 8px;
+.countdown{display:flex;justify-content:center;width:100%;max-width:300px;margin:8px auto 0;padding:10px 0 8px;
   border-top:1px solid rgba(169,127,44,.35);border-bottom:1px solid rgba(169,127,44,.35)}
 .countdown .u{flex:1;max-width:75px;position:relative}
 .countdown .u+.u::before{content:"";position:absolute;left:0;top:15%;height:70%;width:1px;background:linear-gradient(transparent,var(--gold-lt),transparent)}
@@ -115,7 +129,7 @@ button,a{touch-action:manipulation}
   box-shadow:0 4px 16px rgba(125,90,24,.14),inset 0 1px 0 #fff;transition:transform .2s,box-shadow .2s;-webkit-tap-highlight-color:transparent}
 .open-btn:active{transform:scale(.97)}
 .open-btn svg{width:16px;height:16px}
-.scene.on .open-btn{animation:rise 1s 1s both,glow 2.6s 2s ease-in-out infinite}
+.scene.on .open-btn{animation:rise 1s .7s both,glow 2.6s 1.7s ease-in-out infinite}
 @keyframes glow{0%,100%{box-shadow:0 4px 16px rgba(125,90,24,.14),0 0 0 0 rgba(217,189,120,.45)}50%{box-shadow:0 4px 16px rgba(125,90,24,.14),0 0 0 9px rgba(217,189,120,0)}}
 
 /* ---------- page 2: invitation ---------- */
@@ -193,11 +207,40 @@ textarea.field{resize:none;height:72px;line-height:1.6}
 
 @media (max-height:700px){
   .scene{padding:28px 26px 66px}.nav{bottom:18px}
-  .cover-art{width:min(70%,300px)}.cover-title{margin-top:14px}.open-btn{margin-top:18px}.countdown{margin-top:12px;padding:7px 0 6px}
+  .cover-art{width:min(70%,300px)}.cover-title{margin-top:14px}.open-btn{margin-top:18px}.cover-date{margin-top:10px}.countdown{margin-top:6px;padding:7px 0 6px}
   .rule{margin:9px auto}.name{line-height:1.25}.when{margin:8px auto 4px;padding:8px 6px}.card{margin-top:10px;padding:12px}
+  #p1{padding-bottom:28px}
+}
+/* short phone screens (small phones, in-app browsers): tighter cover spacing */
+@media (max-height:600px){
+  #p1{padding-top:24px;padding-bottom:24px}
+  .cover-art{min-height:70px}
+  .cover-title{margin-top:8px;line-height:1.4}
+  .cover-date{margin-top:6px}
+  .greet{margin-top:10px}
+  .open-btn{margin-top:12px}
+}
+/* phone turned sideways: shrink the cover so everything fits on one screen */
+@media (max-height:500px){
+  #p1{padding-top:22px;padding-bottom:22px}
+  .cover-art{width:auto;height:24dvh}
+  .cover-title{font-size:24px;line-height:1.4;margin-top:4px}
+  .cover-sub{font-size:13px;margin-top:0}
+  .cover-date{font-size:13px;margin-top:4px}
+  .countdown{margin-top:4px;padding:4px 0}
+  .countdown b{font-size:19px}
+  .countdown small{font-size:11px}
+  .greet{font-size:14px;margin-top:6px}
+  .open-btn{margin-top:8px;padding:9px 22px;font-size:14px}
 }
 @media (max-height:680px){#p2{padding-top:22px;padding-bottom:58px}#p2 .rule{margin:6px auto}.nav{bottom:12px}.contacts{line-height:1.5}}
 @media (max-width:360px){.scene{padding:30px 22px 70px}.frame i{width:84px}}
+/* very narrow phones (e.g. folded Galaxy Fold): keep the title and button on one line */
+@media (max-width:340px){
+  #p1{padding-left:18px;padding-right:18px}
+  .cover-title{font-size:26px}
+  .open-btn{white-space:nowrap;font-size:13px;padding:11px 16px;gap:8px}
+}
 @media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}.petals{display:none}}
 </style>
 </head>
@@ -216,8 +259,9 @@ textarea.field{resize:none;height:72px;line-height:1.6}
       <img class="cover-art" src="assets/cover-art.webp" alt="රන් පැහැති ඇත් රූප සහ නෙළුම් මල් සහිත සාම්ප්‍රදායික චිත්‍රය">
       <h1 class="cover-title foil reveal d2">මංගල ආරාධනා</h1>
       <p class="cover-sub reveal d3">යශිතා &nbsp;✦&nbsp; නාරද</p>
+      <p class="cover-date reveal d3">2027 ජනවාරි 13 &nbsp;·&nbsp; බුධ දින</p>
       <div class="countdown reveal d4" id="countdown" role="timer" aria-label="මංගල දිනයට ඇති කාලය">
-        <div class="u"><b id="cdD">--</b><small>දින</small></div>
+        <div class="u"><b id="cdD">--</b><small>තව දින</small></div>
         <div class="u"><b id="cdH">--</b><small>පැය</small></div>
         <div class="u"><b id="cdM">--</b><small>මිනිත්තු</small></div>
         <div class="u"><b id="cdS">--</b><small>තත්පර</small></div>
